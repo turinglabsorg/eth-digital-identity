@@ -1,5 +1,5 @@
-const Ficos = artifacts.require("./DID.sol");
+const dID = artifacts.require("./dID.sol");
 
 module.exports = async (deployer) => {
-  await deployer.deploy(Ficos, { gas: 5000000 });
+  await deployer.deploy(dID, { gas: 5000000 });
 };
