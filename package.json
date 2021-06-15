@@ -6,7 +6,7 @@
     "ganache-cli": "ganache-cli -d -p 7545 --gasLimit=10000000",
     "extract-abi": "truffle-export-abi -d ./build/contracts/ -o ./abi.json -v",
     "test": "truffle test",
-    "ganache:deploy": "rm -rf build && truffle deploy --reset && npm run extract-abi",
+    "ganache:deploy": "sudo rm -rf build && sudo truffle deploy --reset && sudo npm run extract-abi",
     "ganache:register": "node ganache/register.js",
     "ganache:pub": "node ganache/pub.js",
     "ganache:recover": "node ganache/recover.js",

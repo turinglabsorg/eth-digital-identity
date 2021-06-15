@@ -16,6 +16,7 @@ module.exports = {
       chainId: 80001,
       confirmations: 2,
       timeoutBlocks: 200,
+      gasPrice: "500000000",
       skipDryRun: true
     },
     ticino: {
@@ -23,6 +24,7 @@ module.exports = {
       network_id: "*",
       confirmations: 2,
       timeoutBlocks: 200,
+      gasPrice: "100000000",
       skipDryRun: true
     },
     quadrans: {
@@ -30,6 +32,7 @@ module.exports = {
       network_id: "*",
       confirmations: 2,
       timeoutBlocks: 200,
+      gasPrice: "100000000",
       skipDryRun: true
     },
   },
