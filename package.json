@@ -8,6 +8,7 @@
     "test": "truffle test",
     "ganache:deploy": "sudo rm -rf build && sudo truffle deploy --reset && sudo npm run extract-abi",
     "ganache:register": "node ganache/register.js",
+    "ganache:add": "node ganache/add.js",
     "ganache:pub": "node ganache/pub.js",
     "ganache:recover": "node ganache/recover.js",
     "quadrans:deploy": "sudo rm -rf build && sudo truffle deploy --network quadrans --reset --verbose-rpc && sudo npm run extract-abi",

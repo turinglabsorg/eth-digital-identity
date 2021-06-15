@@ -49,7 +49,7 @@ async function main() {
   try {
     console.log('Adding identity to smart contract...')
 
-    const card_hash = "5d4753d00bccd2cdf88c1029a56af013f27d9b69a13a2018630cff6632a39afb";
+    const card_hash = "ddea535da3f46ca6e881a81f2b7b983ac76fb5f01e84d59252e18fcfbf932cc0";
     const public_hash = crypto.createHash('sha256').update(card_hash).digest('hex')
     const stored = await contract.methods.returnPublicAddress(public_hash).call()
     console.log('Public address:', stored)
