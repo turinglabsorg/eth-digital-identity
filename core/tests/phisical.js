@@ -3,9 +3,10 @@ const core = new EthDiD()
 core.debug = true
 
 async function test() {
-    console.log('Creating new mnemonic wallet')
+    console.log('Deriving wallet from phisical address')
     console.log('--')
-    const wallet = await core.initPhisicalWallet('MyUniqueHashOrIdentifier', 'MySuperPassword', true, 'MySmartAlias')
+    const wallet = await core.initPhisicalWallet('MyUniqueHashOrIdentifierHashOrSomethingLongerThan16Characters', 'MySuperPassword', true, 'MySmartAlias')
+    console.log('--')
     console.log(wallet)
 }
 

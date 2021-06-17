@@ -1,6 +1,6 @@
 {
   "name": "eth-did-core",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": ".",
   "private": false,
   "main": "src/core.js",
@@ -14,7 +14,8 @@
     "test:wallet": "node tests/wallet.js",
     "test:rpc": "node tests/rpc.js",
     "test:contract": "node tests/contract.js",
-    "test:gasstation": "node tests/gas_station.js"
+    "test:gasstation": "node tests/gas_station.js",
+    "test:phisical": "node tests/phisical.js"
   },
   "keywords": [
     "blockchain",

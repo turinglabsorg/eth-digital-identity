@@ -48,11 +48,15 @@ module.exports = class EthDiD {
      * Utilities functions
      */
 
-    async encrypt(data, password) {
+    async encrypt(data, password, iv = '') {
         return new Promise(response => {
-            let iv = crypto.randomBytes(16)
+            if (iv === '') {
+                iv = crypto.randomBytes(16)
+            }else{
+                iv = Buffer.from(iv)
+            }
             let key = crypto.createHash('sha256').update(String(password)).digest('base64').substr(0, 32)
-            let cipher = crypto.createCipheriv('aes-256-ctr', key, iv);
+            let cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
             let encrypted = cipher.update(data);
             encrypted = Buffer.concat([encrypted, cipher.final()]);
             let hex = iv.toString('hex') + '*' + encrypted.toString('hex')
@@ -60,22 +64,23 @@ module.exports = class EthDiD {
         })
     }
 
-    async decrypt(data, password, buffer = false) {
+    async decrypt(data, password, iv = '') {
         return new Promise(response => {
             try {
-                let textParts = data.split('*');
-                let iv = Buffer.from(textParts.shift(), 'hex')
-                let encryptedText = Buffer.from(textParts.join('*'), 'hex')
+                let encrypted = data
+                if (iv === '') {
+                    let textParts = data.split('*');
+                    iv = Buffer.from(textParts[0], 'hex')
+                    encrypted = textParts[1]
+                }
+                let encryptedText = Buffer.from(encrypted, 'hex')
                 let key = crypto.createHash('sha256').update(String(password)).digest('base64').substr(0, 32)
-                let decipher = crypto.createDecipheriv('aes-256-ctr', key, iv)
+                let decipher = crypto.createDecipheriv('aes-256-cbc', key, iv)
                 let decrypted = decipher.update(encryptedText)
                 decrypted = Buffer.concat([decrypted, decipher.final()])
-                if (buffer === false) {
-                    response(decrypted.toString())
-                } else {
-                    response(decrypted)
-                }
+                response(decrypted.toString())
             } catch (e) {
+                console.log(e)
                 response(false)
             }
         })
@@ -110,7 +115,7 @@ module.exports = class EthDiD {
                     console.log('This is the hash representing the wallet:')
                     console.log('\x1b[32m%s\x1b[0m', hash)
                 }
-                const master = await this.deriveKeyFromMnemonic(mnemonic, 'ethereum', 'm')
+                const master = await this.deriveKeyFromMnemonic(mnemonic, 'ethereum', 'm/0')
 
                 const wallet = {
                     mnemonic: mnemonic,
@@ -119,13 +124,62 @@ module.exports = class EthDiD {
                     master: master.address
                 }
 
-                this.db.get("wallets").push({
-                    hash: hash,
-                    alias: alias,
+                if (save) {
+                    this.db.get("wallets").push({
+                        hash: hash,
+                        alias: alias,
+                        eid: encrypted,
+                        master: master.address
+                    });
+                    this.db.save();
+                }
+
+                response(wallet)
+            } else {
+                if (this.cli || this.debug) {
+                    console.log('There was an error while encrypting the file, please retry.')
+                }
+                response(false)
+            }
+        })
+    }
+
+    initPhisicalWallet(uuid, password, save = false, alias = '') {
+        return new Promise(async response => {
+            if (this.cli || this.debug) {
+                console.log('Deriving wallet from: ' + uuid)
+            }
+            const public_hash = await this.hash(uuid)
+            const mnemonic_hash = await this.hash(uuid + '*' + password)
+            const mnemonic = bip39.entropyToMnemonic(mnemonic_hash)
+            const iv = uuid.substr(0, 8) + uuid.substr(-8)
+            let encrypted = await this.encrypt(mnemonic, password, iv)
+            let decrypted = await this.decrypt(encrypted, password)
+            if (decrypted === mnemonic) {
+                if (this.cli || this.debug) {
+                    console.log('This is your mnemonic phrase, store it safely in your preferred support:')
+                    console.log('\x1b[32m%s\x1b[0m', mnemonic)
+                    console.log('This is the hash representing the wallet:')
+                    console.log('\x1b[32m%s\x1b[0m', uuid)
+                }
+                const master = await this.deriveKeyFromMnemonic(mnemonic, 'ethereum', 'm/0')
+
+                const wallet = {
+                    mnemonic: mnemonic,
                     eid: encrypted,
+                    hash: public_hash,
                     master: master.address
-                });
-                this.db.save();
+                }
+
+                if (save) {
+                    this.db.get("wallets").push({
+                        hash: public_hash,
+                        alias: alias,
+                        eid: encrypted,
+                        master: master.address
+                    });
+                    this.db.save();
+                }
 
                 response(wallet)
             } else {
@@ -250,7 +304,7 @@ module.exports = class EthDiD {
                     if (this.blockchains[this.blockchain][this.network].provider !== "") {
                         if (this.provider !== {}) {
                             try {
-                                if(gasPrice === ''){
+                                if (gasPrice === '') {
                                     gasPrice = await this.web3.eth.getGasPrice()
                                 }
                                 const contract = new this.web3.eth.Contract(
