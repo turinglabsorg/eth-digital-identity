@@ -245,7 +245,7 @@ module.exports = class EthDiD {
     }
 
     initContract(abi, contract_address, gasPrice = '', gasLimit = '') {
-        return new Promise(response => {
+        return new Promise(async response => {
             if (this.blockchains[this.blockchain] !== undefined) {
                 if (this.blockchains[this.blockchain][this.network] !== undefined) {
                     if (this.blockchains[this.blockchain][this.network].provider !== "") {
