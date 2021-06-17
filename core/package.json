@@ -5,8 +5,8 @@
   "private": false,
   "main": "src/core.js",
   "bin": {
-    "b3": "./src/cli.js",
-    "b3d": "./src/daemon.js"
+    "ethdid-cli": "./src/cli.js",
+    "ethdid": "./src/daemon.js"
   },
   "typings": "./types/index.d.ts",
   "scripts": {
