@@ -2,7 +2,6 @@ const axios = require('axios')
 const { sum, round, subtract } = require('mathjs')
 const homedir = require('os').homedir() + '/.ethdid'
 const fs = require('fs')
-const log = require('log-update')
 const bip39 = require('bip39')
 const HDKey = require('hdkey')
 var qrcode = require('qrcode-terminal')

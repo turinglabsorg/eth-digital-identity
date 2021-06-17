@@ -1,6 +1,6 @@
 {
   "name": "eth-did-core",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": ".",
   "private": false,
   "main": "src/core.js",
@@ -38,7 +38,6 @@
     "ethereumjs-wallet": "^1.0.1",
     "express": "^4.17.1",
     "hdkey": "^2.0.1",
-    "log-update": "^4.0.0",
     "mathjs": "^9.4.2",
     "prompts": "^2.4.0",
     "qrcode-terminal": "^0.12.0",
