@@ -59,7 +59,7 @@ async function main() {
     // Calculate the public hash, which is an hash of the printed one.
     const public_hash = crypto.createHash('sha256').update(card_hash).digest('hex')
     // Then merge the hash with the user pin, to create a new unique hash.
-    const mnemonic_hash = crypto.createHash('sha256').update(public_hash + '*' + pin).digest('hex')
+    const mnemonic_hash = crypto.createHash('sha256').update(card_hash + '*' + pin).digest('hex')
     // Generate and print the mnemonic, this will be always the same.
     const mnemonic = bip39.entropyToMnemonic(mnemonic_hash)
     console.log('GENERATED MNEMONIC IS: ' + mnemonic)
