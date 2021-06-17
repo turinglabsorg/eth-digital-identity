@@ -1,4 +1,4 @@
-# Ethereum Digital Identity
+# Ethereum Digital Identity
 
 This repo will allow you to easily manage identities with a Javascript library and a dedicated Smart Contract.
 
