@@ -76,7 +76,7 @@ If you want to setup your own JSON-RPC nodes you can setup in this way (if you w
 core.blockchains['ethereum']['mainnet'].provider = 'https://mainnet.infura.io/v3/YourApiKey'
 ```
 
-### Interact with contract
+### Interact with contract
 
 ```
 /* First connect to selected network */
