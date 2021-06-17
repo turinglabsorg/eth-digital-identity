@@ -52,7 +52,7 @@ module.exports = class EthDiD {
         return new Promise(response => {
             if (iv === '') {
                 iv = crypto.randomBytes(16)
-            }else{
+            } else {
                 iv = Buffer.from(iv)
             }
             let key = crypto.createHash('sha256').update(String(password)).digest('base64').substr(0, 32)
@@ -139,6 +139,40 @@ module.exports = class EthDiD {
                 if (this.cli || this.debug) {
                     console.log('There was an error while encrypting the file, please retry.')
                 }
+                response(false)
+            }
+        })
+    }
+
+    importWallet(eid, password, save = false, alias = '') {
+        return new Promise(async response => {
+            if (this.cli || this.debug) {
+                console.log('Decrypting wallet: ' + hashOrAlias)
+            }
+            const mnemonic = await this.decrypt(eid, password)
+            if (mnemonic !== false) {
+                const master = await this.deriveKeyFromMnemonic(mnemonic, 'ethereum', 'm/0')
+                const hash = await this.hash(mnemonic)
+
+                const wallet = {
+                    mnemonic: mnemonic,
+                    eid: eid,
+                    hash: hash,
+                    master: master.address
+                }
+
+                if (save) {
+                    this.db.get("wallets").push({
+                        hash: hash,
+                        alias: alias,
+                        eid: encrypted,
+                        master: master.address
+                    });
+                    this.db.save();
+                }
+
+                response(wallet)
+            } else {
                 response(false)
             }
         })
@@ -261,7 +295,7 @@ module.exports = class EthDiD {
                     if (this.blockchains[blockchain][network].provider !== "") {
                         this.blockchain = blockchain
                         this.network = network
-                        if(mnemonic === ''){
+                        if (mnemonic === '') {
                             mnemonic = bip39.generateMnemonic(256)
                         }
                         this.provider = new HDWalletProvider({
