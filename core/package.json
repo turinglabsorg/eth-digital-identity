@@ -1,6 +1,6 @@
 {
   "name": "eth-did-core",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": ".",
   "private": false,
   "main": "src/core.js",
@@ -15,7 +15,8 @@
     "test:rpc": "node tests/rpc.js",
     "test:contract": "node tests/contract.js",
     "test:gasstation": "node tests/gas_station.js",
-    "test:phisical": "node tests/phisical.js"
+    "test:phisical": "node tests/phisical.js",
+    "test:import": "node tests/import.js"
   },
   "keywords": [
     "blockchain",

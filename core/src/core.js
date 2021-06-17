@@ -70,7 +70,11 @@ module.exports = class EthDiD {
                 let encrypted = data
                 if (iv === '') {
                     let textParts = data.split('*');
-                    iv = Buffer.from(textParts[0], 'hex')
+                    if (textParts[0].length !== 16) {
+                        iv = Buffer.from(textParts[0], 'hex')
+                    }else{
+                        iv = textParts[0]
+                    }
                     encrypted = textParts[1]
                 }
                 let encryptedText = Buffer.from(encrypted, 'hex')
@@ -147,7 +151,7 @@ module.exports = class EthDiD {
     importWallet(eid, password, save = false, alias = '') {
         return new Promise(async response => {
             if (this.cli || this.debug) {
-                console.log('Decrypting wallet: ' + hashOrAlias)
+                console.log('Importing wallet: ' + eid)
             }
             const mnemonic = await this.decrypt(eid, password)
             if (mnemonic !== false) {
@@ -165,7 +169,7 @@ module.exports = class EthDiD {
                     this.db.get("wallets").push({
                         hash: hash,
                         alias: alias,
-                        eid: encrypted,
+                        eid: eid,
                         master: master.address
                     });
                     this.db.save();
