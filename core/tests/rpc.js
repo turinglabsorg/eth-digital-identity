@@ -10,7 +10,7 @@ async function test() {
     console.log('--')
     console.log('Connecting to Web3')
     console.log('--')
-    await core.connect(mnemonic, 'ganache')
+    await core.connect('ganache', mnemonic)
     const balance = await core.web3.eth.getBalance(wallet.address)
     console.log('Balance is:', balance)
     console.log('Disconnecting from Web3')

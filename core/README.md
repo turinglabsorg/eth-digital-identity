@@ -64,7 +64,7 @@ const decrypted = await core.decryptWallet(wallet.hash, 'MySuperPassword')
 
 ```
 /* Connect to selected network */
-await core.connect(mnemonic, 'ganache')
+await core.connect('ganache', mnemonic)
 
 /* Use classic Web3 methods */
 const balance = await core.web3.eth.getBalance(wallet.address)
@@ -80,7 +80,7 @@ core.blockchains['ethereum']['mainnet'].provider = 'https://mainnet.infura.io/v3
 
 ```
 /* First connect to selected network */
-await core.connect(mnemonic, 'ganache')
+await core.connect('ganache', mnemonic)
 
 /* Init contract by passing ABI and address */
 const contract = await core.initContract(ABI, CONTRACT_ADDRESS)

@@ -5,8 +5,7 @@ core.debug = true
 async function test() {
     console.log('Connecting to Web3')
     console.log('--')
-    const wallet = await core.createWallet('MySuperPassword', true, 'MySmartAlias')
-    await core.connect(wallet.mnemonic, 'quadrans', 'mainnet')
+    await core.connect('quadrans')
     console.log('Asking for gas price')
     console.log('--')
     let price = await core.returnGasPrice('fast')

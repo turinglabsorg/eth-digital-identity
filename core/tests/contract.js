@@ -12,7 +12,7 @@ async function test() {
     console.log('--')
     console.log('Connecting to Web3')
     console.log('--')
-    await core.connect(mnemonic, 'ganache')
+    await core.connect('ganache', mnemonic)
     const contract = await core.initContract(ABI, CONTRACT_ADDRESS)
     if (contract !== false) {
         const identity = 'EncryptedData'

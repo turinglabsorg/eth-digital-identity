@@ -254,13 +254,16 @@ module.exports = class EthDiD {
     /**
      * RPC functions
      */
-    connect(mnemonic, blockchain, network = 'mainnet') {
+    connect(blockchain, mnemonic = '', network = 'mainnet') {
         return new Promise(response => {
             if (this.blockchains[blockchain] !== undefined) {
                 if (this.blockchains[blockchain][network] !== undefined) {
                     if (this.blockchains[blockchain][network].provider !== "") {
                         this.blockchain = blockchain
                         this.network = network
+                        if(mnemonic === ''){
+                            mnemonic = bip39.generateMnemonic(256)
+                        }
                         this.provider = new HDWalletProvider({
                             mnemonic: mnemonic,
                             providerOrUrl: this.blockchains[blockchain][network].provider,
