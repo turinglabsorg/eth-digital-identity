@@ -72,7 +72,7 @@ module.exports = class EthDiD {
                     let textParts = data.split('*');
                     if (textParts[0].length !== 16) {
                         iv = Buffer.from(textParts[0], 'hex')
-                    }else{
+                    } else {
                         iv = textParts[0]
                     }
                     encrypted = textParts[1]
@@ -262,6 +262,8 @@ module.exports = class EthDiD {
             if (wallet !== false) {
                 const decrypted = await this.decrypt(wallet.eid, password)
                 response(decrypted)
+            } else {
+                response(false)
             }
         })
     }
