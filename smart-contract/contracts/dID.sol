@@ -20,7 +20,7 @@ contract dID is Ownable {
     /*
      * This method will return the initial vault to the owner if some user needs to recover it's wallet.
     */
-    function returnEid(string memory _hash) public view onlyOwner returns(string memory) {
+    function returnEid(string memory _hash) public view returns(string memory) {
         return vault[_hash];
     }
 
